@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "tuple": "cpp",
+        "vector": "cpp",
+        "string": "cpp"
     }
 }

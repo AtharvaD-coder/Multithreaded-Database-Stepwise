@@ -1,8 +1,3 @@
-# Step-by-Step Documentation for Creating the DB
-
-The objective of this documentation is to provide stepwise instructions on creating the DB. It has been broken into several phases, each phase having its own branch.
-
----
 
 ## PHASE 1
 
@@ -57,4 +52,3 @@ In the first phase, we built the basic storage primitives (**Bucket**, **Segment
 6. **`vector<pair<string, string>>`, `auto`**: Using C++ standard containers and `auto` keyword for type inference.
 7. **Scope Resolution Operator (`::`)**: Used to define the scope of methods in classes, especially for defining methods outside of the class definition.
 
----
