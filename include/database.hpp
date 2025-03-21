@@ -1,17 +1,15 @@
 #pragma once
-#include "../include/dashtable.hpp"
-#include <string>
 #include <vector>
+#include <memory>
+#include <string>
+#include "./shard.hpp"   // Now using Shard instead of Dashtable directly
 using namespace std;
 
 class Database {
-    
     int noOfShards;
-
-    vector<Dashtable*> shards;
-
-    public:
-
+    vector<Shard*> shards;
+    int getShard(string key);
+public:
     Database(int noOfShards);
     ~Database();
     string Get(string key);

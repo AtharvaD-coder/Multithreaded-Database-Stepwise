@@ -1,39 +1,54 @@
 #include "../include/database.hpp"
+#include "../include/shard.hpp"
+#include <chrono>
+#include <future>
 #include <iostream>
+#include <thread>
 using namespace std;
 
-Database::Database(int noOfShards){
-
+Database::Database(int noOfShards = thread::hardware_concurrency()) {
     this->noOfShards = noOfShards;
-    
+    cout << "NO OF SHARDS: " << noOfShards << endl;
     for (int i = 0; i < noOfShards; i++) {
-        shards.push_back(new Dashtable());
+        shards.emplace_back(new Shard());
     }
 }
 
-string Database::Get(string key) {
-    // Compute shard index using a simple hash
+int Database::getShard(string key) {
     hash<string> hash_fn;
-    int shardIndex = hash_fn(key) % noOfShards;
-    return shards[shardIndex]->Get(key);
+    size_t hashValue = hash_fn(key);
+    int hashval = hashValue % noOfShards;
+    return hashval;
+}
+
+string Database::Get(string key) {
+    int shardIndex = getShard(key);
+    Shard* shard = shards[shardIndex];
+    future<string> resultFuture =
+        shard->submitTransaction(Transaction{GET, key, ""});
+    string result = resultFuture.get();
+    return result;
 }
 
 void Database::Insert(string key, string value) {
-    hash<string> hash_fn;
-    int shardIndex = hash_fn(key) % noOfShards;
-    shards[shardIndex]->Insert(key, value);
+    int shardIndex = getShard(key);
+    Shard* shard = shards[shardIndex];
+    future<string> resultFuture =
+        shard->submitTransaction(Transaction{INSERT, key, value});
+    // Optionally wait for result here or handle asynchronously.
 }
 
 void Database::Delete(string key) {
-    hash<string> hash_fn;
-    int shardIndex = hash_fn(key) % noOfShards;
-    shards[shardIndex]->Delete(key);
+    int shardIndex = getShard(key);
+    Shard* shard = shards[shardIndex];
+    future<string> resultFuture =
+        shard->submitTransaction(Transaction{DELETE, key, ""});
+    string result = resultFuture.get();
 }
 
 Database::~Database() {
-    // Cleanup allocated dashtables.
-    for (auto tbl : shards) {
-        delete tbl;
+    for (auto s : shards) {
+        delete s;
     }
     shards.clear();
 }
