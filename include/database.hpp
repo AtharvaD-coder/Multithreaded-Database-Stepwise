@@ -10,7 +10,7 @@ class Database {
     vector<Shard*> shards;
     int getShard(string key);
 public:
-    Database(int noOfShards);
+    Database(int noOfShards = thread::hardware_concurrency());
     ~Database();
     string Get(string key);
     void Insert(string key, string value);

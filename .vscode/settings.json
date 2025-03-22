@@ -1,8 +1,9 @@
 {
-    "files.associations": {
-        "stdexcept": "cpp",
-        "tuple": "cpp",
-        "vector": "cpp",
-        "string": "cpp"
-    }
+  "files.associations": {
+    "stdexcept": "cpp",
+    "tuple": "cpp",
+    "vector": "cpp",
+    "string": "cpp",
+    "ostream": "cpp"
+  }
 }
