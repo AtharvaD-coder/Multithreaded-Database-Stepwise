@@ -1,14 +1,14 @@
-# **Key-Value Store with Sharding, Multi-Threading, and Transaction Support**
+# Key-Value Store with Sharding, Multi-Threading, and Transaction Support
 
-This project implements a scalable and concurrent **key-value store** in c++. It leverages **sharding**, **consistent hashing**, and **asynchronous transaction processing** to enable efficient horizontal scaling. The system supports **multi-threading** and **lock-free data structures** for high throughput, ensuring efficient concurrent execution of database operations.
+This project implements a scalable and concurrent **key-value store** in C++. It leverages **sharding**, **consistent hashing**, and **asynchronous transaction processing** to enable efficient horizontal scaling. The system supports **multi-threading** and **lock-free data structures** for high throughput, ensuring efficient concurrent execution of database operations.
 
 ---
 
-## **Architectural Overview**
+## Architectural Overview
 
 The database development process has been divided into multiple phases, with each phase implemented in a dedicated branch. Additionally, each phase includes a corresponding documentation file in the `docs` folder, providing a detailed explanation of the phase's implementation and key technical concepts.
 
-### **Phase 1: Core Data Structures**
+### Phase 1: Core Data Structures
 Phase 1 establishes the fundamental data structures necessary for an efficient key-value store:
 - **Bucket**: Manages a collection of key-value pairs with efficient lookup.
 - **Segment**: Groups multiple buckets and manages distributed storage within a single `Dashtable`.
@@ -20,7 +20,7 @@ Key programming principles:
 
 ---
 
-### **Phase 2: Consistent Hashing and Configuration**
+### Phase 2: Consistent Hashing and Configuration
 Phase 2 introduces:
 - **Error Handling**: Custom exception classes (`BucketFullException`, `SegmentFullException`) to ensure robust error recovery.
 - **Global Configuration Management**: Defines constants (`BUCKET_SIZE`, `SEGMENT_SIZE`) for configurable system behavior.
@@ -30,7 +30,7 @@ Phase 2 introduces:
 
 ---
 
-### **Phase 3: Horizontal Scalability via Sharding**
+### Phase 3: Horizontal Scalability via Sharding
 Phase 3 enables **sharding** for distributed storage:
 - **Partitioning Strategy**: Data is distributed across multiple `Dashtable` instances (shards).
 - **Shard Routing**: Uses `std::hash<std::string>` to compute a shard index (`hash_value % noOfShards`).
@@ -42,7 +42,7 @@ Key enhancements:
 
 ---
 
-### **Phase 4: Multi-Threading and Asynchronous Transaction Processing**
+### Phase 4: Multi-Threading and Asynchronous Transaction Processing
 Phase 4 optimizes concurrency and transaction handling:
 - **Dedicated Shard-Level Threading**: Each shard operates in a dedicated thread for parallel transaction processing.
 - **Transaction Queueing**: Utilizes `moodycamel::ConcurrentQueue` for lock-free transaction dispatch.
@@ -60,7 +60,7 @@ Performance improvements:
 
 ---
 
-### **Phase 5: Unit Testing with Google Test**
+### Phase 5: Unit Testing with Google Test
 Phase 5 introduces **automated testing** to ensure system reliability:
 - **Google Test Integration**: Uses `gtest` for unit testing.
 - **Test Suite for CRUD Operations**:
@@ -75,37 +75,36 @@ Phase 5 introduces **automated testing** to ensure system reliability:
 
 ---
 
-## **Key System Features**
-### **1. Sharding for Horizontal Scalability**
+## Key System Features
+### 1. Sharding for Horizontal Scalability
 - **Partitioned Data Storage**: The database is split across multiple independent shards.
 - **Efficient Query Routing**: Uses consistent hashing to assign keys to specific shards.
 
-### **2. Multi-Threading and Parallel Processing**
+### 2. Multi-Threading and Parallel Processing
 - **Dedicated Shard Threads**: Each shard runs its own execution thread for concurrent query execution.
 - **Asynchronous Transaction Handling**: Uses `std::future` for non-blocking operations.
 
-### **3. High-Performance Transaction Queue**
+### 3. High-Performance Transaction Queue
 - **Lock-Free Concurrent Queue**: Uses `moodycamel::ConcurrentQueue` for high-throughput transaction management.
 - **Efficient Work Distribution**: Transactions are processed asynchronously without global locks.
 
-### **4. Memory Management and Optimized Synchronization**
+### 4. Memory Management and Optimized Synchronization
 - **Dynamic Memory Allocation**: Each shard dynamically allocates memory for optimal performance.
 - **Minimal Lock Contention**: Transaction queue eliminates the need for expensive locks.
 
-### **5. Automated Testing with Google Test**
-
+### 5. Automated Testing with Google Test
 
 ---
 
-## **Installation and Setup**
+## Installation and Setup
 
-### **1. Clone the Repository**
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/AtharvaD-coder/Multithreaded-Database.git
-cd cd multithreaded db
+cd multithreaded-db
 ```
 
-### **2. Add Dependencies**
+### 2. Add Dependencies
 - **ConcurrentQueue (MoodyCamel)**
   ```bash
   git submodule add https://github.com/cameron314/concurrentqueue.git libs/concurrentqueue
@@ -117,30 +116,28 @@ cd cd multithreaded db
   git submodule update --init --recursive
   ```
 
-### **3. Build the Project**
+### 3. Build the Project
 ```bash
 cmake -S . -B build
 cmake --build build
 ```
 
-### **4. Run Unit Tests**
+### 4. Run Unit Tests
 ```bash
 ./build/run_tests
 ```
 
 ---
 
-## **Technical Concepts**
-### **1. Consistent Hashing**
+## Technical Concepts
+### 1. Consistent Hashing
 - Distributes keys across segments with minimal data movement during resharding.
 - Uses a **hash ring** to determine key placement.
 
-### **2. Lock-Free Concurrent Queue**
+### 2. Lock-Free Concurrent Queue
 - Provides high-throughput task processing with **low-latency queueing**.
 - Reduces thread contention using a **lock-free multi-producer, multi-consumer model**.
 
-### **3. Thread-Pooling and Parallelism**
+### 3. Thread-Pooling and Parallelism
 - Each shard has an independent execution thread.
 - Transactions are **batched and processed asynchronously**.
-
----
